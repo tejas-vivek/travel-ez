@@ -14,7 +14,7 @@ export const getUser = async () => {
   try {
     const user = await account.get();
 
-    if (!user) return redirect("/sign-in");
+    if (!user) return redirect("/signIn");
 
     const { documents } = await database.listDocuments(
       appwriteConfig.databaseId,
@@ -24,8 +24,10 @@ export const getUser = async () => {
         Query.select(["name", "email", "imageUrl", "joinedAt", "accountId"]),
       ]
     );
+    return documents[0] || null;
   } catch (e) {
     console.log(e);
+    return null;
   }
 };
 
@@ -115,7 +117,7 @@ export const storeUserData = async () => {
   }
 };
 
-export const getExistingUser = async () => {
+export const getExistingUser = async ($id: string) => {
   try {
     const user = await account.get();
 
